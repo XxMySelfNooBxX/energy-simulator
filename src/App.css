@@ -1,0 +1,220 @@
+/* App.css */
+body {
+  background-color: #f4f7f6;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 1. INITIAL LOAD ANIMATION */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard-wrapper {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  /* Apply the animation here */
+  animation: fadeUp 0.8s ease-out forwards; 
+}
+
+.title {
+  text-align: center;
+  color: #1e293b;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.subtitle {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 2. CARD HOVER ANIMATIONS */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+  /* Smooth transition for hover effects */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  color: #0f172a;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  border-bottom: 2px solid #f8fafc;
+  padding-bottom: 1rem;
+}
+
+/* Sliders */
+.slider-group {
+  margin-bottom: 1.5rem;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: capitalize;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  margin-top: -8px;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+  border: 2px solid white;
+  transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+
+.fossil-backup {
+  background: #f8fafc;
+  border-left: 4px solid #64748b;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-top: 2.5rem;
+}
+
+.fossil-backup h4 {
+  margin: 0 0 0.25rem 0;
+  color: #334155;
+}
+
+.fossil-backup p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Metrics Section */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metric-box {
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  /* Smooth transition for background colors and hover */
+  transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.metric-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.metric-box.cost {
+  background: #f0f9ff;
+  border-color: #e0f2fe;
+}
+
+.metric-box.cost .metric-label { color: #0284c7; }
+
+/* 3. DYNAMIC CO2 BACKGROUND CLASSES */
+.metric-box.co2-low {
+  background: #f0fdf4;
+  border-color: #dcfce7;
+}
+.metric-box.co2-low .metric-label { color: #16a34a; }
+
+.metric-box.co2-med {
+  background: #fefce8;
+  border-color: #fef08a;
+}
+.metric-box.co2-med .metric-label { color: #ca8a04; }
+
+.metric-box.co2-high {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+.metric-box.co2-high .metric-label { color: #dc2626; }
+
+
+.metric-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* 4. THE TREE BADGE */
+.tree-badge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.chart-container {
+  height: 320px;
+  width: 100%;
+}

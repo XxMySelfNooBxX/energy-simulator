@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "solar": { "name": "Solar Energy", "costPerMWh": 2500, "co2PerMWh": 0, "stabilityScore": 60, "color": "#FDB813" },
+    "wind": { "name": "Wind Energy", "costPerMWh": 3000, "co2PerMWh": 0, "stabilityScore": 50, "color": "#00A4E4" },
+    "biomass": { "name": "Biomass", "costPerMWh": 4000, "co2PerMWh": 25, "stabilityScore": 85, "color": "#8A9A5B" },
+    "ocean": { "name": "Ocean/Tidal", "costPerMWh": 8500, "co2PerMWh": 0, "stabilityScore": 75, "color": "#0077BE" },
+    "coal": { "name": "Coal (Fossil Grid)", "costPerMWh": 4500, "co2PerMWh": 950, "stabilityScore": 100, "color": "#333333" }
+  }
+}
