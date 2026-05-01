@@ -1,80 +1,80 @@
-import { useEffect, useRef } from 'react';
+import { Suspense, useMemo } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Float, Stars } from '@react-three/drei';
 import Dashboard from './Dashboard';
 
-const AnimatedBackground = () => {
-  const canvasRef = useRef(null);
+// Spread out 3D wireframes across the whole background
+const ScatteredGrid = () => {
+  const shapes = useMemo(() => 
+    Array.from({ length: 25 }, () => ({
+      position: [
+        (Math.random() - 0.5) * 40, // Spread widely on X axis
+        (Math.random() - 0.5) * 25, // Spread widely on Y axis
+        -Math.random() * 25 - 5     // Push backwards into the distance
+      ],
+      scale: Math.random() * 1 + 0.2,
+      speed: Math.random() * 0.5 + 0.2,
+      geo: Math.random() > 0.5 ? 'icosa' : 'octa'
+    }))
+  , []);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  return (
+    <>
+      {shapes.map((shape, i) => (
+        <Float key={i} speed={shape.speed} rotationIntensity={0.5} floatIntensity={1.5}>
+          <mesh position={shape.position} scale={shape.scale}>
+            {shape.geo === 'icosa' 
+              ? <icosahedronGeometry args={[1, 0]} /> 
+              : <octahedronGeometry args={[1, 0]} />}
+            <meshStandardMaterial 
+              color="#3b82f6" 
+              emissive="#22c55e" 
+              emissiveIntensity={0.15} 
+              wireframe 
+              transparent 
+              opacity={0.12} 
+            />
+          </mesh>
+        </Float>
+      ))}
+    </>
+  );
+};
 
-    let particles = [];
-    
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 1;
-        this.vy = (Math.random() - 0.5) * 1;
-        this.size = Math.random() * 3;
-        this.color = ['#3b82f6', '#22c55e', '#f59e0b'][Math.floor(Math.random() * 3)];
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-      }
-
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = 0.5;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 50; i++) {
-      particles.push(new Particle());
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    };
-    
-    // Handle window resize
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} style={{position: 'fixed', top: 0, left: 0, zIndex: -1}} />;
+const Scene = () => {
+  return (
+    <>
+      <color attach="background" args={['#020617']} />
+      <fog attach="fog" args={['#020617', 15, 45]} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[10, 10, 5]} intensity={0.6} color="#60a5fa" />
+      
+      <ScatteredGrid />
+      
+      {/* Dense stars to fill the rest of the space */}
+      <Stars radius={100} depth={80} count={8000} factor={6} saturation={0} fade speed={1.5} />
+    </>
+  );
 };
 
 function App() {
   return (
-    <div>
-      <AnimatedBackground /> {/* <-- Now it actually renders! */}
-      <Dashboard />
+    // Changed inline styles to className="app-container"
+    <div className="app-container">
+      {/* Added className="no-print" here to hide background when printing */}
+      <div className="no-print" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+        <Canvas camera={{ position: [0, 0, 6], fov: 60 }}>
+          <Suspense fallback={null}>
+            <Scene />
+          </Suspense>
+        </Canvas>
+      </div>
+
+      <div style={{ position: 'relative', zIndex: 10, height: '100%', overflowY: 'auto', padding: '0 2rem 2rem 2rem' }}>
+        <Dashboard />
+      </div>
     </div>
-  )
+  );
 }
 
-export default App; // <-- Export must always be at the very bottom
+export default App;
