@@ -1,16 +1,5 @@
-import Dashboard from './Dashboard'
-
-function App() {
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  )
-}
-
-export default App
-// Add to your App.jsx - animated gradient + floating shapes
 import { useEffect, useRef } from 'react';
+import Dashboard from './Dashboard';
 
 const AnimatedBackground = () => {
   const canvasRef = useRef(null);
@@ -63,8 +52,29 @@ const AnimatedBackground = () => {
       });
       requestAnimationFrame(animate);
     };
-    animate();
+    
+    // Handle window resize
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return <canvas ref={canvasRef} style={{position: 'fixed', top: 0, left: 0, zIndex: -1}} />;
 };
+
+function App() {
+  return (
+    <div>
+      <AnimatedBackground /> {/* <-- Now it actually renders! */}
+      <Dashboard />
+    </div>
+  )
+}
+
+export default App; // <-- Export must always be at the very bottom
